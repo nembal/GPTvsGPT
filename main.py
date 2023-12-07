@@ -24,9 +24,25 @@ def get_last_assistant_message(thread_id):
 
 def converse(assistant_1_params, assistant_2_params, topic, message_count):
     print("TOPIC: "+topic+"\n")
-    # Initialize Assistants
-    assistant_1 = client.beta.assistants.create(**assistant_1_params)
-    assistant_2 = client.beta.assistants.create(**assistant_2_params)
+    
+    # Optional re-use of existing Assistants
+    # Replace placeholder assistant IDs with actual values
+    assistant_1_id = "YOUR_ASSISTANT_1_ID"  # Replace with actual ID
+    assistant_1_params["id"] = assistant_1_id
+
+    assistant_2_id = "YOUR_ASSISTANT_2_ID"  # Replace with actual ID
+    assistant_2_params["id"] = assistant_2_id
+
+    # Check if assistants exist before creating them
+    try:
+        assistant_1 = client.beta.assistants.retrieve(assistant_1_id)
+    except:
+        assistant_1 = client.beta.assistants.create(**assistant_1_params)
+
+    try:
+        assistant_2 = client.beta.assistants.retrieve(assistant_2_id)
+    except:
+        assistant_2 = client.beta.assistants.create(**assistant_2_params)
 
     # Create Threads
     thread_1 = client.beta.threads.create()
